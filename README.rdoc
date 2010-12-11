@@ -14,7 +14,8 @@ Hope this is not obtrussive.
 
 === GIT related
 
-* keep_empty_dirs.sh - tool for adding a .keep files into an empty dirs
+* keep_empty_dirs.sh - tool for adding a .keep files into an empty dirs.
+
   I am using this for init a git repositories.
 
 * git-rm-cached.sh - tool for perform `git rm --cache` on a deleted files
@@ -24,7 +25,8 @@ Hope this is not obtrussive.
 
 * rails-rake/cab_db_tools.rake - this is the task `rake cab:db:create` which
   creates a database by the database.yml (creates a user with the given password and
-  a database owned by user)
+  a database owned by user).
+
   Now supported only the PostgreSQL, but adding the MySQL and any other extermaly
   easy (the abstract adapter is supplied).
 
@@ -37,7 +39,9 @@ Hope this is not obtrussive.
 === Other
 
 * iso2usb.sh - this is batch for the Gentoo guide http://www.gentoo.org/doc/en/liveusb.xml
+
   Implemented only common wanted steps.
+
   NOTE: HEAD version of this tool is not yet tested after the extremaly small fix
         this should work but if you would like to use tested version you should use
         commit f478436
