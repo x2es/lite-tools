@@ -16,7 +16,6 @@ function check_mount_point(){
   RET_MOUNTED_DEVICE=$device
 }
 
-[ "`id -u`" == "0" ] || die "You should be root!"
 [ -z "$1" ] && die "Usage: `basename $0` <iso-mount-point> <usb-mount-point>"
 
 ISO_MOUNT=`readlink -f $1`
@@ -51,6 +50,8 @@ range={0..${#JOBS[@]}}
 for ((i=0; i<${#JOBS[@]}; i++)); do
   echo " > ${JOBS[i]}"
 done
+
+[ "`id -u`" == "0" ] || die "You should be root!"
 
 echo ""
 ANS="init"
