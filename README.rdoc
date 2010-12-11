@@ -1,0 +1,44 @@
+= Lite tools
+
+This is lite tools "pack" which helpfull in several aspects of
+programming life.
+
+== Safe and Verbose
+
+All this tools always explains which actions will be performed and asks
+permision for making changes.
+
+Hope this not obtrussive.
+
+== Overview
+
+=== GIT related
+
+* keep_empty_dirs.sh - tool for adding .keep files into empty dirs
+  I am using this for init git repositories.
+
+* git-rm-cached.sh - tool for perform git rm --cache on deleted files
+  using `git status` info.
+
+=== Ruby-on-Rails stuff
+
+* rails-rake/cab_db_tools.rake - this is task `rake cab:db:create` which
+  creates database by database.yml (creates user with given password and
+  database owned by user)
+  Now supported only PostgreSQL, but adding MySQL and any other extermaly
+  easy (abstract adapter supplied).
+
+  NOTE: this tool do wanted job well, but code is not ideally.
+
+  Tested on postgres 8.4.4-r1
+
+  TODO: make specs, add mysql adapter
+
+=== Other
+
+* iso2usb.sh - this is batch for Guide http://www.gentoo.org/doc/en/liveusb.xml
+  Implemented only common wanted steps
+  NOTE: HEAD version of this tool not yet tested after extremaly small fix
+        this should work but if you would like to use tested version use
+        commit f478436
+
