@@ -1,0 +1,15 @@
+#!/bin/bash
+
+self_dir="$(dirname -- "$0")"
+
+service_name=$1
+shift
+shell=$1
+shift
+
+[[ -z "$service_name" ]] && echo "Usage: console <service name> [ /bin/bash ] [ arguments ]" && exit 1
+[[ -z "$shell" ]] && shell=/bin/bash
+
+set -x
+docker exec -it -u 0 `$self_dir/container-id $service_name` $shell "$@"
+

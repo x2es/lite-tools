@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PORT=$1
+
+while netstat -lnt | awk -v pattern="[.:]$PORT$" '$4 ~ pattern {exit 1}'; do sleep 5; done
+

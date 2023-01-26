@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+[[ -z "$VS_BRANCH" ]] && VS_BRANCH=master
+
+SPECS_LIST=$((git diff --name-status $VS_BRANCH | awk '{ print $2 }'; git status -u --porcelain | awk '{ print $2 }') | grep '_spec.rb$' | sort -u)
+
+echo Project root: `pwd`
+
+set -x
+RAILS_ENV=test bundle exec rspec $SPECS_LIST 

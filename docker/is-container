@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#
+# Check if container exist (service may have multiple containers)
+#
+# Usage: 
+#   pp-core/is-container service_name && ok || not ok
+#
+
+[ $(docker ps | grep "$1" | wc -l) -eq 0 ] && exit 1 || exit 0

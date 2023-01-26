@@ -1,5 +1,12 @@
 = The Lite tools
 
+== OUTDATED CODE CAUTION
+
+This directory contains tools which have been written at the far 2011 year.
+Probably most of them is not actual or outdated.
+
+== So
+
 This is the lite tools "pack" which helpfull in several aspects of
 programming life.
 

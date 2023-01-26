@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#
+# Waits container (not service)
+# Accept service name
+#
+# Usage:
+#   wait-container service_name
+#
+
+self_dir="$(dirname -- "$0")"
+service_name=$1
+
+echo "wait for container: $service_name"
+until $self_dir/is-container $service_name; do sleep 5; done
+

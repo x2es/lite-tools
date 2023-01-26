@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -x
+git diff --name-only --cached | grep '.rb$\|.rake$' | xargs bundle exec rubocop $@
+

@@ -1,0 +1,98 @@
+#!/bin/bash
+
+function die() {
+  echo "ERROR: $1"
+  exit 1
+}
+
+function usage() {
+  echo "Usage:"
+  echo "  $0 <out filename>"
+  exit 1
+}
+
+function classify() {
+  awk '{
+    row=$0
+    if(match($row, /\(([.0-9a-zA-Z]+) < ([.0-9a-zA-Z]+)\)/, m)) {
+      split(m[1], curVersion, ".")
+      split(m[2], newVersion, ".")
+
+      if (curVersion[1] != newVersion[1]) {
+        if (newVersion[1] - curVersion[1] == 1) {
+          token="__RELEASE_NEXT__ "
+        }
+        else {
+          token="__RELEASE_FAR__ "
+        }
+
+        print token row
+        next
+      } 
+
+      if (curVersion[2] != newVersion[2]) {
+        if (curVersion[1] != 0) {
+          if (nextVersion[2] - nextVersion[2] == 1) {
+            token="__MAJOR_NEXT__ "
+          }
+          else {
+            token="__MAJOR_FAR__ "
+          }
+        }
+        else {
+          if (nextVersion[2] - nextVersion[2] == 1) {
+            token="__PSEUDO_RELEASE_NEXT__ "
+          }
+          else {
+            token="__PSEUDO_RELEASE_FAR__ "
+          }
+        }
+        print token row
+        next
+      } 
+
+      if (curVersion[3] != newVersion[3]) {
+        print "__MINOR__ " row
+        next
+      } 
+    }
+
+    print "__OTHER__ " row
+  }' < /dev/stdin
+}
+
+OUTPUT_FILE=$1
+
+[[ -z "$OUTPUT_FILE" ]] && usage
+
+if [[ "$OVERWRITE" != "yes" ]]; then
+  [[ -e "$OUTPUT_FILE" ]] && die "File $OUTPUT_FILE already exists. Use: OVERWRITE=yes $0 $1"
+  [[ -e "$OUTPUT_FILE.tmp" ]] && die "File $OUTPUT_FILE.tmp already exists. Use: OVERWRITE=yes $0 $1"
+fi
+
+echo > $OUTPUT_FILE
+echo " > invoke: gem outdated..."
+gem outdated | classify > $OUTPUT_FILE.tmp
+
+while read pair; do 
+  TITLE=`echo $pair | cut -d \; -f 1`
+  TOKEN=`echo $pair | cut -d \; -f 2`
+
+  echo -e "\n\n## $TITLE\n" >> $OUTPUT_FILE
+  cat $OUTPUT_FILE.tmp | grep $TOKEN | cut -d ' ' -f 2- >> $OUTPUT_FILE
+  printf "\ntotal: " >> $OUTPUT_FILE
+  cat $OUTPUT_FILE.tmp | grep $TOKEN | wc -l >> $OUTPUT_FILE
+done << EOM
+RELEASE CHANGED (multiple releases) X.y.z;__RELEASE_FAR__
+RELEASE CHANGED (next release latest) X.y.z;__RELEASE_NEXT__
+PSEUDO RELEASE CHANGED (multiple releases) 0.Y.z;__PSEUDO_RELEASE_FAR__
+PSEUDO RELEASE CHANGED (next release latest) 0.Y.z;__PSEUDO_RELEASE_NEXT__
+MAJOR CHANGED (multiple release) x.Y.z;__MAJOR_FAR__
+MAJOR CHANGED (next release latest) x.Y.z;__MAJOR_NEXT__
+MINOR CHANGED x.y.Z;__MINOR__
+OTHER CHANGED;__OTHER__
+EOM
+
+rm $OUTPUT_FILE.tmp
+
+echo "Done: $OUTPUT_FILE"
