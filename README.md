@@ -38,7 +38,9 @@ NOTE: assumed `docker` wokrs without `sudo`
 
 * `rails/rspec-modified` - invoke rspec only for changed specs. Use `VS_BRANCH=feature` (default: `master`).
 * `rails/rubocop-staged` - invoke RuboCop for files staged to commit. Tip: accepts params like `-a` or `-A`.
-* `rails/gem-outdated-by-semver` - split `gem outdated` output by semver on priority groups with stat.
+* (obsolete) `rails/gem-outdated-by-semver` - split `gem outdated` output by semver on priority groups with stat.
+* `bundle outdated | rails/audit-outdated-gems.py` - similar split, implemented in Python
+* `bundle outdated | rails/audit-outdated-gems.py --json` - similar split in JSON format for machine processing
 
 ## As Is
 
